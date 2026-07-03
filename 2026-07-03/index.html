@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ability.ai Outbound — Weekly Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F3EC;
+    --card:#FFFFFF;
+    --ink:#1C1A16;
+    --muted:#736C60;
+    --faint:#9C948684;
+    --line:#E5DFD2;
+    --accent:#B0501F;
+    --accent-ink:#8A3D15;
+    --pos:#4C7A52;
+    --bar:#DED7C8;
+    --hold:#C9C0B0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #FBF9F4 0%, transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Instrument Sans", -apple-system, "Segoe UI", sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    padding:56px 20px 80px;
+  }
+  .sheet{max-width:840px;margin:0 auto}
+
+  /* Masthead */
+  .kicker{
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent-ink);font-weight:600;display:flex;align-items:center;gap:10px;
+  }
+  .kicker::before{content:"";width:26px;height:2px;background:var(--accent);display:inline-block}
+  h1{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;font-size:clamp(38px,7vw,60px);line-height:1.02;
+    letter-spacing:-.02em;margin:18px 0 0;
+  }
+  h1 .em{font-style:italic;font-weight:500;color:var(--accent-ink)}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:20px;
+    padding-top:18px;border-top:1px solid var(--line);
+    font-size:14px;color:var(--muted);
+  }
+  .meta b{color:var(--ink);font-weight:600}
+
+  /* Metric strip */
+  .stats{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;margin:34px 0 10px;
+  }
+  .stat{background:var(--card);padding:20px 18px}
+  .stat .n{font-family:"Fraunces",serif;font-weight:600;font-size:34px;letter-spacing:-.02em;line-height:1}
+  .stat .n.zero{color:var(--muted)}
+  .stat .l{font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-top:9px}
+  .stat .sub{font-size:12px;color:var(--pos);margin-top:3px;font-weight:600}
+
+  /* Sections */
+  section{margin-top:44px}
+  .h{
+    font-family:"Fraunces",serif;font-size:13px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent-ink);margin-bottom:18px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .h::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .rows{display:flex;flex-direction:column;gap:2px}
+  .item{
+    display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;
+    padding:15px 0;border-bottom:1px solid var(--line);
+  }
+  .item:last-child{border-bottom:0}
+  .idx{font-family:"Fraunces",serif;font-size:15px;color:var(--accent);font-weight:600;padding-top:2px}
+  .item h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .item p{font-size:14.5px;color:var(--muted);margin-top:3px}
+
+  /* Segment breakdown */
+  .panel{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px;
+  }
+  .segrow{display:grid;grid-template-columns:150px 1fr 84px;gap:16px;align-items:center;padding:11px 0}
+  .segrow + .segrow{border-top:1px solid var(--line)}
+  .segname{font-size:14px;font-weight:600}
+  .segname span{display:block;font-size:12px;color:var(--muted);font-weight:400}
+  .track{height:12px;background:var(--paper);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+  .fill{height:100%;border-radius:20px}
+  .segval{text-align:right;font-family:"Fraunces",serif;font-weight:600;font-size:16px}
+  .tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:20px;display:inline-block;margin-top:4px}
+  .tag.done{background:#EAF1EA;color:var(--pos)}
+  .tag.hold{background:#F0EBE0;color:#8A7B5E}
+
+  /* Funnel */
+  .funnel{display:flex;flex-direction:column;gap:10px}
+  .fstep{display:grid;grid-template-columns:1fr;gap:0}
+  .fbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px;border-radius:10px;color:#fff;font-weight:600;
+  }
+  .fbar .fl{font-size:13.5px;letter-spacing:.01em;opacity:.95}
+  .fbar .fn{font-family:"Fraunces",serif;font-size:20px}
+  .fstep.empty .fbar{background:var(--card);color:var(--muted);border:1px dashed var(--line)}
+
+  .note{
+    margin-top:40px;padding:18px 22px;background:#FBF3EC;border:1px solid #EAD9C8;
+    border-radius:12px;font-size:14px;color:#7A5A3E;
+  }
+  .foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+  @media (max-width:680px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .segrow{grid-template-columns:120px 1fr 60px}
+  }
+  @media print{
+    body{background:#fff;padding:0}
+    .panel,.stats{box-shadow:none}
+    .note{background:#f6efe8}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div class="kicker">Ability.ai&nbsp;&nbsp;·&nbsp;&nbsp;Outbound</div>
+    <h1>Weekly activity <span class="em">report</span></h1>
+    <div class="meta">
+      <span>Week of <b>June 30 to July 3, 2026</b></span>
+      <span>Prepared by <b>Victor</b></span>
+      <span>Sending identity <b>corbin@ability.ai</b></span>
+      <span>Program <b>MarketingOps co-webinar</b></span>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n">93</div><div class="l">Leads in program</div></div>
+    <div class="stat"><div class="n">26</div><div class="l">First touches sent</div></div>
+    <div class="stat"><div class="n">100%</div><div class="l">Delivered</div><div class="sub">0 bounces</div></div>
+    <div class="stat"><div class="n zero">0</div><div class="l">Replies so far</div></div>
+    <div class="stat"><div class="n">21</div><div class="l">Follow ups queued</div></div>
+  </div>
+
+  <section>
+    <div class="h">Done this week</div>
+    <div class="rows">
+      <div class="item">
+        <div class="idx">01</div>
+        <div>
+          <h3>Took over and cleaned the full list</h3>
+          <p>All 93 MarketingOps co-webinar leads reviewed and prepped, segmented by how each one engaged with the session (attended live, watched the replay, or registered without attending).</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">02</div>
+        <div>
+          <h3>Rewrote the outreach so it is personalized, not templated</h3>
+          <p>The existing copy went out as one template with only the first name swapped. Every email is now written around the person's role and company, and varied so no two are alike. On a fresh inbox that is what keeps messages landing in the primary tab rather than getting filtered.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">03</div>
+        <div>
+          <h3>Stood up a tracking system</h3>
+          <p>A working CRM where every lead carries a status, a next action, and a date, so the cadence runs on schedule and nothing slips between touches.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">04</div>
+        <div>
+          <h3>Sent first touch to the two warmest segments</h3>
+          <p>26 emails out to the 21 people who attended live and the 5 who watched the replay. Everything delivered clean with zero bounces. No replies yet, which is expected this early on a brand new mailbox, plus two automatic out of office notices.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h">Segments and status</div>
+    <div class="panel">
+      <div class="segrow">
+        <div class="segname">Attended live<span>warmest</span></div>
+        <div class="track"><div class="fill" style="width:100%;background:var(--accent)"></div></div>
+        <div class="segval">21<div class="tag done">Contacted</div></div>
+      </div>
+      <div class="segrow">
+        <div class="segname">Watched replay<span>on demand</span></div>
+        <div class="track"><div class="fill" style="width:24%;background:var(--accent)"></div></div>
+        <div class="segval">5<div class="tag done">Contacted</div></div>
+      </div>
+      <div class="segrow">
+        <div class="segname">Registered, did not attend<span>coldest</span></div>
+        <div class="track"><div class="fill" style="width:100%;background:var(--hold)"></div></div>
+        <div class="segval">67<div class="tag hold">Holding</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h">Pipeline this week</div>
+    <div class="funnel">
+      <div class="fstep">
+        <div class="fbar" style="background:var(--ink);width:100%">
+          <span class="fl">In program</span><span class="fn">93</span>
+        </div>
+      </div>
+      <div class="fstep">
+        <div class="fbar" style="background:var(--accent);width:52%">
+          <span class="fl">Contacted</span><span class="fn">26</span>
+        </div>
+      </div>
+      <div class="fstep empty">
+        <div class="fbar" style="width:32%">
+          <span class="fl">Replied</span><span class="fn">0</span>
+        </div>
+      </div>
+      <div class="fstep empty">
+        <div class="fbar" style="width:32%">
+          <span class="fl">Calls booked</span><span class="fn">0</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h">In progress and next</div>
+    <div class="rows">
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Follow ups to the 21 attendees</h3>
+          <p>Personalized second touches are written and going out on a slow drip through the week, so we stay safe on the new inbox rather than sending in one burst.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Holding the 67 who did not attend</h3>
+          <p>These are the coldest group. I am holding them until the dedicated warmed sending mailboxes come online around July 8, instead of risking the main ability.ai domain by sending cold volume from it now.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Standing up the sending infrastructure</h3>
+          <p>Getting the inboxkit setup ready so we can scale daily volume safely once the new mailboxes finish warming.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="note">
+    The pace this week is deliberate. A new mailbox has to build trust before it can carry volume, so warm segments go first and slowly while the dedicated sending mailboxes warm in the background. Volume opens up once those are ready.
+  </div>
+
+  <div class="foot">
+    <span><a href="../" style="color:var(--accent-ink);text-decoration:none;font-weight:600">← All reports</a>&nbsp;&nbsp;·&nbsp;&nbsp;Ability.ai · Outbound · Week 1</span>
+    <span>Next report Friday, July 10</span>
+  </div>
+
+</div>
+</body>
+</html>

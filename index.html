@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ability.ai Outbound — Reports</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F3EC;--card:#FFFFFF;--ink:#1C1A16;--muted:#736C60;
+    --line:#E5DFD2;--accent:#B0501F;--accent-ink:#8A3D15;--pos:#4C7A52;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #FBF9F4 0%, transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Instrument Sans",-apple-system,"Segoe UI",sans-serif;
+    line-height:1.6;-webkit-font-smoothing:antialiased;
+    padding:64px 20px 90px;
+  }
+  .sheet{max-width:720px;margin:0 auto}
+  .kicker{
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent-ink);font-weight:600;display:flex;align-items:center;gap:10px;
+  }
+  .kicker::before{content:"";width:26px;height:2px;background:var(--accent);display:inline-block}
+  h1{
+    font-family:"Fraunces",Georgia,serif;font-weight:600;
+    font-size:clamp(36px,7vw,54px);line-height:1.02;letter-spacing:-.02em;margin:18px 0 12px;
+  }
+  h1 .em{font-style:italic;font-weight:500;color:var(--accent-ink)}
+  .lede{font-size:16px;color:var(--muted);max-width:52ch;
+    padding-bottom:26px;border-bottom:1px solid var(--line);margin-bottom:8px}
+
+  .card{
+    display:flex;align-items:center;justify-content:space-between;gap:18px;
+    background:var(--card);border:1px solid var(--line);border-radius:14px;
+    padding:22px 24px;margin-top:16px;text-decoration:none;color:inherit;
+    transition:transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:0 12px 30px -18px #4a3a2a55;border-color:#D8CEBB}
+  .card .when{font-family:"Fraunces",serif;font-size:12px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--accent-ink);font-weight:600}
+  .card h2{font-family:"Fraunces",serif;font-size:22px;font-weight:600;letter-spacing:-.01em;margin-top:4px}
+  .card p{font-size:14px;color:var(--muted);margin-top:4px}
+  .chips{display:flex;gap:8px;margin-top:12px;flex-wrap:wrap}
+  .chip{font-size:12px;color:var(--muted);background:var(--paper);
+    border:1px solid var(--line);border-radius:20px;padding:3px 11px}
+  .chip b{color:var(--ink);font-family:"Fraunces",serif;font-weight:600}
+  .go{font-family:"Fraunces",serif;font-size:26px;color:var(--accent);flex:none}
+
+  .foot{margin-top:40px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:13px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="sheet">
+  <div class="kicker">Ability.ai&nbsp;&nbsp;·&nbsp;&nbsp;Outbound</div>
+  <h1>Activity <span class="em">reports</span></h1>
+  <p class="lede">Weekly summary of outbound activity, what shipped and what is in progress. Newest first.</p>
+
+  <a class="card" href="2026-07-03/">
+    <div>
+      <div class="when">Week 1 · July 3, 2026</div>
+      <h2>MarketingOps co-webinar kickoff</h2>
+      <p>List cleaned and rewritten, first touches out to the warm segments, tracking live.</p>
+      <div class="chips">
+        <span class="chip"><b>93</b> in program</span>
+        <span class="chip"><b>26</b> contacted</span>
+        <span class="chip"><b>0</b> bounces</span>
+      </div>
+    </div>
+    <div class="go">→</div>
+  </a>
+
+  <div class="foot">Prepared by Victor · Sending identity corbin@ability.ai</div>
+</div>
+</body>
+</html>
