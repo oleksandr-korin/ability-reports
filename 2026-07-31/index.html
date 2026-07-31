@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ability.ai Outbound · Weekly Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F3EC;
+    --card:#FFFFFF;
+    --ink:#1C1A16;
+    --muted:#736C60;
+    --faint:#9C948684;
+    --line:#E5DFD2;
+    --accent:#B0501F;
+    --accent-ink:#8A3D15;
+    --pos:#4C7A52;
+    --bar:#DED7C8;
+    --hold:#C9C0B0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #FBF9F4 0%, transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Instrument Sans", -apple-system, "Segoe UI", sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    padding:56px 20px 80px;
+  }
+  .sheet{max-width:840px;margin:0 auto}
+
+  /* Masthead */
+  .kicker{
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent-ink);font-weight:600;display:flex;align-items:center;gap:10px;
+  }
+  .kicker::before{content:"";width:26px;height:2px;background:var(--accent);display:inline-block}
+  h1{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;font-size:clamp(38px,7vw,60px);line-height:1.02;
+    letter-spacing:-.02em;margin:18px 0 0;
+  }
+  h1 .em{font-style:italic;font-weight:500;color:var(--accent-ink)}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:20px;
+    padding-top:18px;border-top:1px solid var(--line);
+    font-size:14px;color:var(--muted);
+  }
+  .meta b{color:var(--ink);font-weight:600}
+
+  /* Metric strip */
+  .stats{
+    display:grid;grid-template-columns:repeat(6,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;margin:34px 0 10px;
+  }
+  .stat{background:var(--card);padding:20px 18px}
+  .stat .n{font-family:"Fraunces",serif;font-weight:600;font-size:34px;letter-spacing:-.02em;line-height:1}
+  .stat .n.zero{color:var(--muted)}
+  .stat .l{font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-top:9px}
+  .stat .sub{font-size:12px;color:var(--pos);margin-top:3px;font-weight:600}
+
+  /* Sections */
+  section{margin-top:44px}
+  .h{
+    font-family:"Fraunces",serif;font-size:13px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent-ink);margin-bottom:18px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .h::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .rows{display:flex;flex-direction:column;gap:2px}
+  .item{
+    display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;
+    padding:15px 0;border-bottom:1px solid var(--line);
+  }
+  .item:last-child{border-bottom:0}
+  .idx{font-family:"Fraunces",serif;font-size:15px;color:var(--accent);font-weight:600;padding-top:2px}
+  .item h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .item p{font-size:14.5px;color:var(--muted);margin-top:3px}
+
+  /* Segment breakdown */
+  .panel{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px;
+  }
+  .segrow{display:grid;grid-template-columns:150px 1fr 84px;gap:16px;align-items:center;padding:11px 0}
+  .segrow + .segrow{border-top:1px solid var(--line)}
+  .segname{font-size:14px;font-weight:600}
+  .segname span{display:block;font-size:12px;color:var(--muted);font-weight:400}
+  .track{height:12px;background:var(--paper);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+  .fill{height:100%;border-radius:20px}
+  .segval{text-align:right;font-family:"Fraunces",serif;font-weight:600;font-size:16px}
+  .tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:20px;display:inline-block;margin-top:4px}
+  .tag.done{background:#EAF1EA;color:var(--pos)}
+  .tag.hold{background:#F0EBE0;color:#8A7B5E}
+
+  /* Funnel */
+  .funnel{display:flex;flex-direction:column;gap:10px}
+  .fstep{display:grid;grid-template-columns:1fr;gap:0}
+  .fbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px;border-radius:10px;color:#fff;font-weight:600;
+  }
+  .fbar .fl{font-size:13.5px;letter-spacing:.01em;opacity:.95}
+  .fbar .fn{font-family:"Fraunces",serif;font-size:20px}
+  .fstep.empty .fbar{background:var(--card);color:var(--muted);border:1px dashed var(--line)}
+
+  .note{
+    margin-top:40px;padding:18px 22px;background:#FBF3EC;border:1px solid #EAD9C8;
+    border-radius:12px;font-size:14px;color:#7A5A3E;
+  }
+  .foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+  @media (max-width:680px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .segrow{grid-template-columns:120px 1fr 60px}
+  }
+  @media print{
+    body{background:#fff;padding:0}
+    .panel,.stats{box-shadow:none}
+    .note{background:#f6efe8}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div class="kicker">Ability.ai&nbsp;&nbsp;·&nbsp;&nbsp;Outbound</div>
+    <h1>Weekly activity <span class="em">report</span></h1>
+    <div class="meta">
+      <span>Week of <b>July 24 to July 30, 2026</b></span>
+      <span>Prepared by <b>Victor</b></span>
+      <span>Program <b>Full lead base</b></span>
+      <span>Cadence <b>Daily outreach</b></span>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n">1,193</div><div class="l">Leads in CRM</div></div>
+    <div class="stat"><div class="n">425</div><div class="l">Emails sent this week</div></div>
+    <div class="stat"><div class="n">3</div><div class="l">Replies this week</div><div class="sub">3 companies</div></div>
+    <div class="stat"><div class="n">90</div><div class="l">Daily capacity now</div><div class="sub">3 mailboxes</div></div>
+    <div class="stat"><div class="n">310</div><div class="l">In active sequence</div></div>
+    <div class="stat"><div class="n">37</div><div class="l">Purged, bad data</div></div>
+  </div>
+
+  <section>
+    <div class="h">Done this week</div>
+    <div class="rows">
+      <div class="item">
+        <div class="idx">01</div>
+        <div>
+          <h3>Fresh replies from three companies</h3>
+          <p>Three replies landed this week, from Jenny at Truist, Tal at Flix, and Ben at LandGate. Each one is a live conversation now being worked toward a call for Eugene or another SDR. The volume is small and early, but the program keeps producing engaged replies week over week rather than only sends.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">02</div>
+        <div>
+          <h3>Highest sending week so far, held near capacity</h3>
+          <p>Sending ran at the full 90 on four working days and closed out at 65 on the last, 425 emails across the week and the strongest week to date. Each message was built, quality checked, and paced across US working hours before it went out, and every day stayed gated on review, so the count reflects only what was approved.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">03</div>
+        <div>
+          <h3>Rebuilt the outreach copy on a documented method</h3>
+          <p>The writing moved onto a proven cold outreach approach across every touch. First contacts are shorter, open in the reader's world, and carry one proof point with a light interest ask that does not push for a meeting until the lead engages. Each follow up now shifts angle and adds a new piece of value instead of repeating the previous ask.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">04</div>
+        <div>
+          <h3>Reply inbox now clears itself once a thread is answered</h3>
+          <p>When a conversation has been answered from our side, it closes automatically and drops off the open list. The panel shows only what is still waiting on us, so nothing already handled sits there looking unanswered and the same lead can never be replied to twice.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">05</div>
+        <div>
+          <h3>Ran a full system audit, clean pipeline with one flag</h3>
+          <p>A complete health check this week came back clean on the mechanics: no duplicates, no missing records, and no data corruption. One thing worth surfacing honestly. For several days the queue leaned entirely toward follow ups because the supply of strong new leads is running thin. The fix underway is to reserve part of each day's capacity for fresh first contacts so new leads keep entering alongside the follow ups.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">06</div>
+        <div>
+          <h3>Kept every send on a verified, clean address</h3>
+          <p>Domain level verification runs before every send, and any address that bounces is caught and removed automatically before it can touch the sending reputation. The running total of purged bad records reached 37, made up of 33 dead addresses and 4 domains that no longer resolve.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h">Lead base by fit</div>
+    <div class="panel">
+      <div class="segrow">
+        <div class="segname">Tier 1<span>ideal fit</span></div>
+        <div class="track"><div class="fill" style="width:5%;background:var(--accent)"></div></div>
+        <div class="segval">29</div>
+      </div>
+      <div class="segrow">
+        <div class="segname">Tier 2<span>strong fit</span></div>
+        <div class="track"><div class="fill" style="width:35%;background:var(--accent)"></div></div>
+        <div class="segval">217</div>
+      </div>
+      <div class="segrow">
+        <div class="segname">Tier 3<span>moderate fit</span></div>
+        <div class="track"><div class="fill" style="width:100%;background:var(--hold)"></div></div>
+        <div class="segval">627</div>
+      </div>
+      <div class="segrow">
+        <div class="segname">Tier 4<span>low fit</span></div>
+        <div class="track"><div class="fill" style="width:51%;background:var(--hold)"></div></div>
+        <div class="segval">320</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h">Activity this week</div>
+    <div class="funnel">
+      <div class="fstep">
+        <div class="fbar" style="background:var(--ink);width:100%">
+          <span class="fl">In CRM</span><span class="fn">1,193</span>
+        </div>
+      </div>
+      <div class="fstep">
+        <div class="fbar" style="background:var(--accent);width:36%">
+          <span class="fl">Contacted this week</span><span class="fn">425</span>
+        </div>
+      </div>
+      <div class="fstep">
+        <div class="fbar" style="background:var(--pos);width:13%">
+          <span class="fl">Replied</span><span class="fn">3</span>
+        </div>
+      </div>
+      <div class="fstep empty">
+        <div class="fbar" style="width:20%">
+          <span class="fl">Calls booked</span><span class="fn">0</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h">Next week</div>
+    <div class="rows">
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Move the open conversations toward booked calls</h3>
+          <p>Three replies are live and being worked toward a call for Eugene or another SDR. Each thread is read and answered with real open times, so the next step is set by the conversation and lands straight on your calendar rather than on a fixed template.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Reserve daily capacity for fresh first contacts</h3>
+          <p>Part of each day now goes to new leads that have never been touched, so first contacts and follow ups run side by side instead of the queue filling with follow ups alone. This keeps the top of the funnel moving while the open conversations are worked.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Hold a steady 90 a day</h3>
+          <p>All three mailboxes are warmed and live. The plan is to run every working day at the full 90 across the highest fit leads first, which lands near 450 across the week once each day sends at capacity.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Keep the data clean and report on sourcing</h3>
+          <p>Domain verification and automatic bounce purging run on every send. With the strong fit pool now thinning, I will come back with a clear view on where fresh sourcing on your side would add the most, so the best segments keep getting fed.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="note">
+    The one item worth acting on your side is lead supply. The audit this week found the queue leaning entirely toward follow ups for several days because the pool of strong fit, never contacted leads has run thin. Verification still runs before every send and bad records are dropped automatically, with the cleaned total now at 37, and the pattern from the earlier batches holds that a share of the older form sourced records point to people who have since moved on. Fresh sourcing into the ideal and strong fit tiers would give the program more of its best leads to work.
+  </div>
+
+  <div class="foot">
+    <span><a href="../" style="color:var(--accent-ink);text-decoration:none;font-weight:600">← All reports</a>&nbsp;&nbsp;·&nbsp;&nbsp;Ability.ai · Outbound · Week 5</span>
+    <span>Next report Friday, August 7</span>
+  </div>
+
+</div>
+</body>
+</html>
