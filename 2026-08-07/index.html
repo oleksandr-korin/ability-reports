@@ -1,0 +1,323 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ability.ai Outbound · Weekly Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F3EC;
+    --card:#FFFFFF;
+    --ink:#1C1A16;
+    --muted:#736C60;
+    --faint:#9C948684;
+    --line:#E5DFD2;
+    --accent:#B0501F;
+    --accent-ink:#8A3D15;
+    --pos:#4C7A52;
+    --bar:#DED7C8;
+    --hold:#C9C0B0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #FBF9F4 0%, transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Instrument Sans", -apple-system, "Segoe UI", sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    padding:56px 20px 80px;
+  }
+  .sheet{max-width:840px;margin:0 auto}
+
+  /* Masthead */
+  .kicker{
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent-ink);font-weight:600;display:flex;align-items:center;gap:10px;
+  }
+  .kicker::before{content:"";width:26px;height:2px;background:var(--accent);display:inline-block}
+  h1{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;font-size:clamp(38px,7vw,60px);line-height:1.02;
+    letter-spacing:-.02em;margin:18px 0 0;
+  }
+  h1 .em{font-style:italic;font-weight:500;color:var(--accent-ink)}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:20px;
+    padding-top:18px;border-top:1px solid var(--line);
+    font-size:14px;color:var(--muted);
+  }
+  .meta b{color:var(--ink);font-weight:600}
+
+  /* Metric strip */
+  .stats{
+    display:grid;grid-template-columns:repeat(6,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;margin:34px 0 10px;
+  }
+  .stats.four{grid-template-columns:repeat(4,1fr);margin:0}
+  .stat{background:var(--card);padding:20px 18px}
+  .stat .n{font-family:"Fraunces",serif;font-weight:600;font-size:34px;letter-spacing:-.02em;line-height:1}
+  .stat .n.zero{color:var(--muted)}
+  .stat .l{font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-top:9px}
+  .stat .sub{font-size:12px;color:var(--pos);margin-top:3px;font-weight:600}
+  .stat .sub.flat{color:var(--muted)}
+
+  /* Sections */
+  section{margin-top:44px}
+  .h{
+    font-family:"Fraunces",serif;font-size:13px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent-ink);margin-bottom:18px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .h::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .rows{display:flex;flex-direction:column;gap:2px}
+  .item{
+    display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;
+    padding:15px 0;border-bottom:1px solid var(--line);
+  }
+  .item:last-child{border-bottom:0}
+  .idx{font-family:"Fraunces",serif;font-size:15px;color:var(--accent);font-weight:600;padding-top:2px}
+  .item h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .item p{font-size:14.5px;color:var(--muted);margin-top:3px}
+
+  /* Segment breakdown */
+  .panel{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px;
+  }
+  .segrow{display:grid;grid-template-columns:150px 1fr 84px;gap:16px;align-items:center;padding:11px 0}
+  .segrow + .segrow{border-top:1px solid var(--line)}
+  .segname{font-size:14px;font-weight:600}
+  .segname span{display:block;font-size:12px;color:var(--muted);font-weight:400}
+  .track{height:12px;background:var(--paper);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+  .fill{height:100%;border-radius:20px}
+  .segval{text-align:right;font-family:"Fraunces",serif;font-weight:600;font-size:16px}
+  .tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:20px;display:inline-block;margin-top:4px}
+  .tag.done{background:#EAF1EA;color:var(--pos)}
+  .tag.hold{background:#F0EBE0;color:#8A7B5E}
+
+  .caption{font-size:14px;color:var(--muted);margin-top:16px}
+
+  /* Funnel */
+  .funnel{display:flex;flex-direction:column;gap:10px}
+  .fstep{display:grid;grid-template-columns:1fr;gap:0}
+  .fbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px;border-radius:10px;color:#fff;font-weight:600;
+  }
+  .fbar .fl{font-size:13.5px;letter-spacing:.01em;opacity:.95}
+  .fbar .fn{font-family:"Fraunces",serif;font-size:20px}
+  .fstep.empty .fbar{background:var(--card);color:var(--muted);border:1px dashed var(--line)}
+
+  .note{
+    margin-top:40px;padding:18px 22px;background:#FBF3EC;border:1px solid #EAD9C8;
+    border-radius:12px;font-size:14px;color:#7A5A3E;
+  }
+  .foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+  @media (max-width:680px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .stats.four{grid-template-columns:repeat(2,1fr)}
+    .segrow{grid-template-columns:120px 1fr 60px}
+  }
+  @media print{
+    body{background:#fff;padding:0}
+    .panel,.stats{box-shadow:none}
+    .note{background:#f6efe8}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div class="kicker">Ability.ai&nbsp;&nbsp;·&nbsp;&nbsp;Outbound</div>
+    <h1>Weekly activity <span class="em">report</span></h1>
+    <div class="meta">
+      <span>Week of <b>July 31 to August 6, 2026</b></span>
+      <span>Prepared by <b>Victor</b></span>
+      <span>Program <b>Full lead base</b></span>
+      <span>Cadence <b>Daily outreach</b></span>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n">1,195</div><div class="l">Leads in CRM</div></div>
+    <div class="stat"><div class="n">438</div><div class="l">Emails sent this week</div></div>
+    <div class="stat"><div class="n">9</div><div class="l">Replies this week</div><div class="sub">7 companies</div></div>
+    <div class="stat"><div class="n">90</div><div class="l">Daily capacity now</div><div class="sub">3 mailboxes</div></div>
+    <div class="stat"><div class="n">203</div><div class="l">Awaiting reply</div></div>
+    <div class="stat"><div class="n">1,462</div><div class="l">Emails sent all time</div></div>
+  </div>
+
+  <section>
+    <div class="h">Deliverability</div>
+    <div class="stats four">
+      <div class="stat"><div class="n">1.4%</div><div class="l">Bounce rate this week</div><div class="sub flat">6 of 438</div></div>
+      <div class="stat"><div class="n">2.7%</div><div class="l">Bounce rate all time</div><div class="sub flat">39 of 1,462</div></div>
+      <div class="stat"><div class="n">39</div><div class="l">Addresses purged</div><div class="sub flat">all time</div></div>
+      <div class="stat"><div class="n">4</div><div class="l">Dead domains dropped</div><div class="sub flat">before send</div></div>
+    </div>
+    <p class="caption">Every address is checked at the domain level before it enters a day's queue, and any domain that no longer resolves is removed before a message is ever built for it. Four have been dropped that way. Anything that still bounces is caught the same day, the record is retired, and the mailbox that sent it pauses if it takes three in one day. Across all sending to date the retired total is 39, and the concentration sits in the stronger tiers: 20 in Tier 2, 14 in Tier 3, 5 in Tier 1. That is a property of the age of those records rather than of the sending, and it is the same signal behind the sourcing note below.</p>
+  </section>
+
+  <section>
+    <div class="h">Done this week</div>
+    <div class="rows">
+      <div class="item">
+        <div class="idx">01</div>
+        <div>
+          <h3>Nine replies, the best reply week of the program</h3>
+          <p>Nine replies came in from seven companies: Jessica at Facilities Management eXpress, Vasilii at B2BROKER, Yvonne at Blvd, Mike at Echo 5 Bravo, Jeanette at Talented People, Mercedes at Propertyscouts, and one independent consultant. One of those threads is now three messages deep. Each open thread is read in full and answered with real open times from your calendar, so the next step lands directly with you or another SDR.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">02</div>
+        <div>
+          <h3>438 sent, four of five days at full capacity</h3>
+          <p>Sending ran at the full 90 on four working days and 78 on the fifth, for 438 across the week and the highest week to date. Every message was written against the live context on the record, reviewed by an automated quality pass, approved before the day opened, and paced across US working hours. Nothing goes out on a day that has not been approved.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">03</div>
+        <div>
+          <h3>Bounce reporting is now a standing part of this report</h3>
+          <p>Per the request on the scaling call, deliverability now has its own block above and will appear every week: rate for the week, rate across all sending, addresses retired, and domains dropped before send. This week came in at 1.4 percent against 2.7 percent lifetime, so the trend is downward as the older records work their way out of the base.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">04</div>
+        <div>
+          <h3>Fixed the queue so first contacts stop getting crowded out</h3>
+          <p>The daily queue had been filling entirely with follow ups on days when many came due, which left new leads sitting untouched and wasted unused capacity. Priority scoring now carries a ranked reserve list, and any capacity left over after the day's follow ups is filled from it with fresh first contacts. First contacts and follow ups now run side by side every day.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">05</div>
+        <div>
+          <h3>Second sending domain finished setup, three more mailboxes in warmup</h3>
+          <p>Three additional mailboxes on a second domain are through setup and in warmup now, which takes daily capacity to 180 in mid August. Six more across two further domains follow, for 12 mailboxes across four domains and 360 a day by late August. Splitting across domains rather than stacking mailboxes on one keeps sending reputation independent per domain.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">06</div>
+        <div>
+          <h3>Confirmed the base is now fully covered on first touch</h3>
+          <p>A count against the full base this week showed that first touch coverage is effectively complete. The leads still queued are re engagements of records already contacted at least once, not new names. This is worth stating plainly because it changes what the capacity increase buys: at 360 a day the constraint stops being send volume and becomes supply of names that have never been contacted.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">07</div>
+        <div>
+          <h3>Reply handling closes itself out and never double sends</h3>
+          <p>Every reply that lands gets a drafted response with real open times inside the same thread, and the open list clears itself once a thread has actually been answered from our side. A draft sitting unsent does not clear it, so nothing gets answered twice and nothing waiting on us drops off the list.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h">Lead base by fit</div>
+    <div class="panel">
+      <div class="segrow">
+        <div class="segname">Tier 1<span>ideal fit</span></div>
+        <div class="track"><div class="fill" style="width:5%;background:var(--accent)"></div></div>
+        <div class="segval">29</div>
+      </div>
+      <div class="segrow">
+        <div class="segname">Tier 2<span>strong fit</span></div>
+        <div class="track"><div class="fill" style="width:35%;background:var(--accent)"></div></div>
+        <div class="segval">217</div>
+      </div>
+      <div class="segrow">
+        <div class="segname">Tier 3<span>moderate fit</span></div>
+        <div class="track"><div class="fill" style="width:100%;background:var(--hold)"></div></div>
+        <div class="segval">627</div>
+      </div>
+      <div class="segrow">
+        <div class="segname">Tier 4<span>low fit</span></div>
+        <div class="track"><div class="fill" style="width:51%;background:var(--hold)"></div></div>
+        <div class="segval">322</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h">Activity this week</div>
+    <div class="funnel">
+      <div class="fstep">
+        <div class="fbar" style="background:var(--ink);width:100%">
+          <span class="fl">In CRM</span><span class="fn">1,195</span>
+        </div>
+      </div>
+      <div class="fstep">
+        <div class="fbar" style="background:var(--accent);width:37%">
+          <span class="fl">Contacted this week</span><span class="fn">438</span>
+        </div>
+      </div>
+      <div class="fstep">
+        <div class="fbar" style="background:var(--pos);width:16%">
+          <span class="fl">Replied</span><span class="fn">9</span>
+        </div>
+      </div>
+      <div class="fstep empty">
+        <div class="fbar" style="width:12%">
+          <span class="fl">Bounced</span><span class="fn">6</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h">Next week</div>
+    <div class="rows">
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Work the seven open conversations toward calls</h3>
+          <p>Seven threads are live, one of them three messages deep. Each gets answered in thread with real open times so the booking lands with you or another SDR rather than sitting in a queue.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Bring the second domain online at 180 a day</h3>
+          <p>The three new mailboxes finish warmup in mid August and join the daily rotation as soon as they are clear, doubling capacity to 180. The remaining six follow on the same path toward 360.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Line up net new names before the capacity lands</h3>
+          <p>With first touch coverage complete, the four times capacity increase needs new names to point at. Alex is looking at sourcing on your side, and I will keep the priority scoring and verification ready so anything new lands straight into the daily queue.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Hold the send quality bar through the volume increase</h3>
+          <p>Every message keeps going through the same write, review, and approve path at 180 a day that it does at 90. Deliverability gets reported here each week so any drift shows up early rather than after reputation damage.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="note">
+    The item worth acting on your side is still lead supply, and it is now measurable rather than a projection. First touch coverage across the base is complete, so what remains in the queue is re engagement of records already contacted. Deliverability is healthy at 1.4 percent for the week against 2.7 percent lifetime, and the retired addresses cluster in Tier 1 and Tier 2, which says the best fit records are also the oldest. Capacity goes to 180 a day in mid August and 360 by late August. Net new names into the ideal and strong fit tiers are what turn that capacity into activity.
+  </div>
+
+  <div class="foot">
+    <span><a href="../" style="color:var(--accent-ink);text-decoration:none;font-weight:600">← All reports</a>&nbsp;&nbsp;·&nbsp;&nbsp;Ability.ai · Outbound · Week 6</span>
+    <span>Next report Friday, August 14</span>
+  </div>
+
+</div>
+</body>
+</html>
