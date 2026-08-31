@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Ability.ai Outbound · Weekly Report</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,900&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#F6F3EC;
+    --card:#FFFFFF;
+    --ink:#1C1A16;
+    --muted:#736C60;
+    --faint:#9C948684;
+    --line:#E5DFD2;
+    --accent:#B0501F;
+    --accent-ink:#8A3D15;
+    --pos:#4C7A52;
+    --bar:#DED7C8;
+    --hold:#C9C0B0;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    background:
+      radial-gradient(1200px 600px at 80% -10%, #FBF9F4 0%, transparent 60%),
+      var(--paper);
+    color:var(--ink);
+    font-family:"Instrument Sans", -apple-system, "Segoe UI", sans-serif;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    padding:56px 20px 80px;
+  }
+  .sheet{max-width:840px;margin:0 auto}
+
+  /* Masthead */
+  .kicker{
+    font-size:12px;letter-spacing:.22em;text-transform:uppercase;
+    color:var(--accent-ink);font-weight:600;display:flex;align-items:center;gap:10px;
+  }
+  .kicker::before{content:"";width:26px;height:2px;background:var(--accent);display:inline-block}
+  h1{
+    font-family:"Fraunces", Georgia, serif;
+    font-weight:600;font-size:clamp(38px,7vw,60px);line-height:1.02;
+    letter-spacing:-.02em;margin:18px 0 0;
+  }
+  h1 .em{font-style:italic;font-weight:500;color:var(--accent-ink)}
+  .meta{
+    display:flex;flex-wrap:wrap;gap:6px 26px;margin-top:20px;
+    padding-top:18px;border-top:1px solid var(--line);
+    font-size:14px;color:var(--muted);
+  }
+  .meta b{color:var(--ink);font-weight:600}
+
+  /* Metric strip */
+  .stats{
+    display:grid;grid-template-columns:repeat(6,1fr);gap:1px;
+    background:var(--line);border:1px solid var(--line);border-radius:14px;
+    overflow:hidden;margin:34px 0 10px;
+  }
+  .stats.four{grid-template-columns:repeat(4,1fr);margin:0}
+  .stat{background:var(--card);padding:20px 18px}
+  .stat .n{font-family:"Fraunces",serif;font-weight:600;font-size:34px;letter-spacing:-.02em;line-height:1}
+  .stat .n.zero{color:var(--muted)}
+  .stat .l{font-size:11.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--muted);margin-top:9px}
+  .stat .sub{font-size:12px;color:var(--pos);margin-top:3px;font-weight:600}
+  .stat .sub.flat{color:var(--muted)}
+
+  /* Sections */
+  section{margin-top:44px}
+  .h{
+    font-family:"Fraunces",serif;font-size:13px;font-weight:600;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--accent-ink);margin-bottom:18px;
+    display:flex;align-items:center;gap:12px;
+  }
+  .h::after{content:"";flex:1;height:1px;background:var(--line)}
+
+  .rows{display:flex;flex-direction:column;gap:2px}
+  .item{
+    display:grid;grid-template-columns:34px 1fr;gap:14px;align-items:start;
+    padding:15px 0;border-bottom:1px solid var(--line);
+  }
+  .item:last-child{border-bottom:0}
+  .idx{font-family:"Fraunces",serif;font-size:15px;color:var(--accent);font-weight:600;padding-top:2px}
+  .item h3{font-size:16px;font-weight:600;letter-spacing:-.01em}
+  .item p{font-size:14.5px;color:var(--muted);margin-top:3px}
+
+  /* Segment breakdown */
+  .panel{
+    background:var(--card);border:1px solid var(--line);border-radius:14px;padding:26px 26px 22px;
+  }
+  .segrow{display:grid;grid-template-columns:150px 1fr 84px;gap:16px;align-items:center;padding:11px 0}
+  .segrow + .segrow{border-top:1px solid var(--line)}
+  .segname{font-size:14px;font-weight:600}
+  .segname span{display:block;font-size:12px;color:var(--muted);font-weight:400}
+  .track{height:12px;background:var(--paper);border-radius:20px;overflow:hidden;border:1px solid var(--line)}
+  .fill{height:100%;border-radius:20px}
+  .segval{text-align:right;font-family:"Fraunces",serif;font-weight:600;font-size:16px}
+  .tag{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.05em;padding:3px 9px;border-radius:20px;display:inline-block;margin-top:4px}
+  .tag.done{background:#EAF1EA;color:var(--pos)}
+  .tag.hold{background:#F0EBE0;color:#8A7B5E}
+
+  .caption{font-size:14px;color:var(--muted);margin-top:16px}
+
+  /* Funnel */
+  .funnel{display:flex;flex-direction:column;gap:10px}
+  .fstep{display:grid;grid-template-columns:1fr;gap:0}
+  .fbar{
+    display:flex;align-items:center;justify-content:space-between;
+    padding:14px 18px;border-radius:10px;color:#fff;font-weight:600;
+  }
+  .fbar .fl{font-size:13.5px;letter-spacing:.01em;opacity:.95}
+  .fbar .fn{font-family:"Fraunces",serif;font-size:20px}
+  .fstep.empty .fbar{background:var(--card);color:var(--muted);border:1px dashed var(--line)}
+
+  .note{
+    margin-top:40px;padding:18px 22px;background:#FBF3EC;border:1px solid #EAD9C8;
+    border-radius:12px;font-size:14px;color:#7A5A3E;
+  }
+  .foot{margin-top:34px;padding-top:18px;border-top:1px solid var(--line);
+    font-size:13px;color:var(--muted);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+  @media (max-width:680px){
+    .stats{grid-template-columns:repeat(2,1fr)}
+    .stats.four{grid-template-columns:repeat(2,1fr)}
+    .segrow{grid-template-columns:120px 1fr 60px}
+  }
+  @media print{
+    body{background:#fff;padding:0}
+    .panel,.stats{box-shadow:none}
+    .note{background:#f6efe8}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <header>
+    <div class="kicker">Ability.ai&nbsp;&nbsp;·&nbsp;&nbsp;Outbound</div>
+    <h1>Weekly activity <span class="em">report</span></h1>
+    <div class="meta">
+      <span>Week of <b>August 21 to August 27, 2026</b></span>
+      <span>Prepared by <b>Victor</b></span>
+      <span>Program <b>Full lead base</b></span>
+      <span>Cadence <b>Daily outreach</b></span>
+    </div>
+  </header>
+
+  <div class="stats">
+    <div class="stat"><div class="n">1,400</div><div class="l">Leads in CRM</div></div>
+    <div class="stat"><div class="n">177</div><div class="l">Emails sent this week</div><div class="sub flat">three send days</div></div>
+    <div class="stat"><div class="n zero">0</div><div class="l">Replies this week</div></div>
+    <div class="stat"><div class="n">90</div><div class="l">Daily capacity now</div><div class="sub flat">3 mailboxes</div></div>
+    <div class="stat"><div class="n">322</div><div class="l">Awaiting reply</div></div>
+    <div class="stat"><div class="n">2,029</div><div class="l">Emails sent all time</div></div>
+  </div>
+
+  <section>
+    <div class="h">Deliverability</div>
+    <div class="stats four">
+      <div class="stat"><div class="n">0.6%</div><div class="l">Bounce rate this week</div><div class="sub flat">1 of 177</div></div>
+      <div class="stat"><div class="n">2.3%</div><div class="l">Bounce rate all time</div><div class="sub flat">47 of 2,029</div></div>
+      <div class="stat"><div class="n">47</div><div class="l">Addresses purged</div><div class="sub flat">all time</div></div>
+      <div class="stat"><div class="n">8</div><div class="l">Dead domains dropped</div><div class="sub flat">before send</div></div>
+    </div>
+    <p class="caption">One bounce against 177 sent, which is 0.6 percent and the cleanest reading the program has had on a real denominator. The lifetime figure came down from 2.5 to 2.3 percent across 2,029 sends, with 47 addresses retired in total. Two more domains stopped resolving and were dropped before a message was built for them, taking that count to 8. The retired records still sit mostly in the stronger tiers, 21 in Tier 3, 20 in Tier 2, 5 in Tier 1 and 1 in Tier 4, which tracks the age of those records rather than the sending. Anything that bounces is caught the same day and the record is retired, and any mailbox taking three bounces in a day pauses itself for the rest of that day.</p>
+  </section>
+
+  <section>
+    <div class="h">Done this week</div>
+    <div class="rows">
+      <div class="item">
+        <div class="idx">01</div>
+        <div>
+          <h3>Copy rebuilt to open on the pain of the lead's vertical</h3>
+          <p>Until this week every message opened on context about the company and carried a mandatory proof point, and with no proof point available on support workloads the writer kept landing on reporting or infrastructure regardless of who was reading. The recipe now works the other way round. Each message opens on the operational pain that fits that lead's vertical, drawn from the eleven ICP profiles your team maintains, and the proof point became optional on the reasoning that verifiable claims belong in the meeting rather than in a first touch.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">02</div>
+        <div>
+          <h3>Guardrails written into the new recipe before it shipped</h3>
+          <p>The pain is always phrased as a pattern across teams like theirs and never asserted as a fact about that person or that company, and the adversarial review that reads every message before approval now carries that as an explicit rule and flags anything stated as fact or any pain that does not match the role. Follow ups pick a different pain from the first touch instead of repeating the angle. The recipe was tested against a full build before it went live: seven of seven valid, seven distinct pains, subjects landing on stack sprawl, monday reports, churn signals, ticket volume and pipeline visibility.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">03</div>
+        <div>
+          <h3>177 sent across three send days</h3>
+          <p>Friday put out 83 and Monday 85, both close to the 90 ceiling. Tuesday and Wednesday produced no sends while the copy change was built and tested, and Thursday resumed on the new version with a build of 9. That last number is what the queue produced rather than a cap that was applied, and it is the supply point again: the daily build is limited by how many records are eligible on the day, not by how much the mailboxes can carry.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">04</div>
+        <div>
+          <h3>Base grew by 76 records, all of it in the lowest tier</h3>
+          <p>The lead base moved from 1,324 to 1,400. Tier 1 held at 29 and Tier 2 at 218, both unchanged, while Tier 4 went from 450 to 526. Everything that arrived went through domain verification and priority scoring on the way in, so the new records are usable, but they sit at the bottom of the fit ranking and they do not relieve the constraint on the tiers that matter.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">05</div>
+        <div>
+          <h3>Capacity deliberately held at 90</h3>
+          <p>The three warmed mailboxes on the second domain are still out of the rotation and daily capacity stayed at 90 rather than moving to 180. They are ready and the hold is a choice: doubling send capacity against a pool that is already producing single digit build days would spend the remaining good fit records faster without putting more of them in front of anyone. The step goes in when there is supply to justify it.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">06</div>
+        <div>
+          <h3>Record layer held clean through the week</h3>
+          <p>The daily integrity check and the address based writes that went in last week ran through a week that included a mid week recipe change and a resumed queue, with no repair work needed on the record set. That was the point of last week's effort and it is worth one line rather than a section.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h">Lead base by fit</div>
+    <div class="panel">
+      <div class="segrow">
+        <div class="segname">Tier 1<span>ideal fit</span></div>
+        <div class="track"><div class="fill" style="width:5%;background:var(--accent)"></div></div>
+        <div class="segval">29</div>
+      </div>
+      <div class="segrow">
+        <div class="segname">Tier 2<span>strong fit</span></div>
+        <div class="track"><div class="fill" style="width:35%;background:var(--accent)"></div></div>
+        <div class="segval">218</div>
+      </div>
+      <div class="segrow">
+        <div class="segname">Tier 3<span>moderate fit</span></div>
+        <div class="track"><div class="fill" style="width:100%;background:var(--hold)"></div></div>
+        <div class="segval">627</div>
+      </div>
+      <div class="segrow">
+        <div class="segname">Tier 4<span>low fit</span></div>
+        <div class="track"><div class="fill" style="width:84%;background:var(--hold)"></div></div>
+        <div class="segval">526</div>
+      </div>
+    </div>
+    <p class="caption">Third week running where the growth is entirely in Tier 4 and the top two tiers do not move. The program can keep working the base at its current pace for a while, but the fit mix is the reason a build day can come out at 9.</p>
+  </section>
+
+  <section>
+    <div class="h">Activity this week</div>
+    <div class="funnel">
+      <div class="fstep">
+        <div class="fbar" style="background:var(--ink);width:100%">
+          <span class="fl">In CRM</span><span class="fn">1,400</span>
+        </div>
+      </div>
+      <div class="fstep">
+        <div class="fbar" style="background:var(--accent);width:24%">
+          <span class="fl">Contacted</span><span class="fn">177</span>
+        </div>
+      </div>
+      <div class="fstep empty">
+        <div class="fbar" style="width:12%">
+          <span class="fl">Replied</span><span class="fn">0</span>
+        </div>
+      </div>
+      <div class="fstep empty">
+        <div class="fbar" style="width:12%">
+          <span class="fl">Bounced</span><span class="fn">1</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="h">Next week</div>
+    <div class="rows">
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Run a full week on the new copy</h3>
+          <p>Five send days at 90 with every first touch and every follow up written under the new recipe. Only nine messages have gone out on it so far, so next week is the first stretch with enough volume behind it to read anything, and the read is on reply rate rather than on send count.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Watch bounce rate across the copy change</h3>
+          <p>This week landed at 0.6 percent and the lifetime figure moved down, so the baseline going in is clean. A change to how every message is written is exactly the kind of change that can move sender reputation, so the weekly rate gets watched against that 0.6 rather than against the lifetime average.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Take in whatever lands on lead supply</h3>
+          <p>Nothing gets built for the partnerships campaign until the first list is in hand, so the reader follows how that data actually arrives. Same for sourcing on your side: whatever comes in goes through the same domain verification and priority scoring into the daily queue. Capacity moves to 180 in the same week that supply justifies it.</p>
+        </div>
+      </div>
+      <div class="item">
+        <div class="idx">→</div>
+        <div>
+          <h3>Work the open threads</h3>
+          <p>Eight records across the program sit in reply status. Each one is read in full and answered in thread with real open times from your calendar, so the next step lands with you or another SDR rather than sitting in a queue.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="note">
+    177 sent, zero replies and one bounce is the honest line for the week. The substantive work was the copy rewrite: messages now open on the operational pain of the lead's vertical instead of on context plus a proof point, which is the first change to the message itself since the method went in at the end of July. Capacity stayed at 90 on purpose, because a single digit build day on Thursday says the binding constraint is eligible leads rather than mailboxes, and the base grew by 76 records this week without adding one to Tier 1 or Tier 2. Next week runs the new copy at full volume, which is the first real read on it.
+  </div>
+
+  <div class="foot">
+    <span><a href="../" style="color:var(--accent-ink);text-decoration:none;font-weight:600">← All reports</a>&nbsp;&nbsp;·&nbsp;&nbsp;Ability.ai · Outbound · Week 9</span>
+    <span>Next report Friday, September 4</span>
+  </div>
+
+</div>
+</body>
+</html>
