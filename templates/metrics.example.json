@@ -1,6 +1,9 @@
 {
   "week": "2026-09-04",
-  "period": {"from": "2026-08-28", "to": "2026-09-03"},
+  "period": {
+    "from": "2026-08-28",
+    "to": "2026-09-03"
+  },
   "program": {
     "sends_week": 0,
     "sends_all_time": 2029,
@@ -16,8 +19,13 @@
   },
   "infra": {
     "domains": [
-      {"domain": "example-domain-2.com", "state": "active", "mailboxes": 3, "cap_per_day": 60, "since": "2026-08-14"},
-      {"domain": "example-domain-3.com", "state": "warming", "mailboxes": 3, "cap_per_day": 0, "since": "2026-08-28"}
+      {
+        "domain": "example-domain-2.com",
+        "state": "active",
+        "mailboxes": 3,
+        "cap_per_day": 60,
+        "since": "2026-08-14"
+      }
     ],
     "domains_retired_all_time": 8
   },
@@ -30,20 +38,45 @@
       "first_touches": 0,
       "sequence_complete": 0,
       "bounces": 0,
-      "replies": {"positive": 0, "neutral": 0, "negative": 0, "wrong_person": 0, "opt_out": 0},
+      "replies": {
+        "positive": 0,
+        "neutral": 0,
+        "negative": 0,
+        "wrong_person": 0,
+        "opt_out": 0
+      },
       "meetings_booked": 0,
       "positive_reply_rate_pct": null,
-      "by_fit_tier": {"1": {"first_touches": 0, "positive": 0}},
-      "by_segment": {
-        "A1": {"first_touches": 0, "positive": 0},
-        "A2": {"first_touches": 0, "positive": 0},
-        "Z1": {"first_touches": 0, "positive": 0},
-        "C1": {"first_touches": 0, "positive": 0},
-        "N1": {"first_touches": 0, "positive": 0},
-        "B1": {"first_touches": 0, "positive": 0}
+      "by_fit_tier": {
+        "1": {
+          "first_touches": 0,
+          "positive": 0
+        }
       },
-      "gate": {"due": "2026-09-18", "bounce_max_pct": 5, "wrong_person_max_pct": 25, "min_positive": 1, "status": "pending"},
-      "sign_off": {"list_owner": "Alex", "sender": "Vic", "date": "2026-09-03", "copy_reviewed_against_canon": false, "suppression_rows_removed": 0}
+      "by_segment": {
+        "A2": {
+          "first_touches": 0,
+          "positive": 0
+        },
+        "Z1": {
+          "first_touches": 0,
+          "positive": 0
+        }
+      },
+      "gate": {
+        "due": "2026-09-18",
+        "bounce_max_pct": 5,
+        "wrong_person_max_pct": 25,
+        "min_positive": 1,
+        "status": "pending"
+      },
+      "sign_off": {
+        "list_owner": "Alex",
+        "sender": "Vic",
+        "date": "2026-09-03",
+        "copy_reviewed_against_canon": false,
+        "suppression_rows_removed": 0
+      }
     },
     {
       "campaign": "full-lead-base",
@@ -52,16 +85,50 @@
       "first_touches": 0,
       "sequence_complete": 0,
       "bounces": 0,
-      "replies": {"positive": 0, "neutral": 0, "negative": 0, "wrong_person": 0, "opt_out": 0},
-      "by_tier": {"1": {"first_touches": 0, "positive": 0}, "2": {"first_touches": 0, "positive": 0}, "3": {"first_touches": 0, "positive": 0}, "4": {"first_touches": 0, "positive": 0}}
+      "replies": {
+        "positive": 0,
+        "neutral": 0,
+        "negative": 0,
+        "wrong_person": 0,
+        "opt_out": 0
+      },
+      "by_tier": {
+        "1": {
+          "first_touches": 0,
+          "positive": 0
+        },
+        "2": {
+          "first_touches": 0,
+          "positive": 0
+        },
+        "3": {
+          "first_touches": 0,
+          "positive": 0
+        },
+        "4": {
+          "first_touches": 0,
+          "positive": 0
+        }
+      }
     }
   ],
   "signals": [
-    {"signal": "positive_reply_rate", "scope": "program", "value_pct": 0.4, "level": "red", "action": "stop scaling; wave 1 is the controlled read", "owner": "Vic+Alex"}
+    {
+      "signal": "positive_reply_rate",
+      "scope": "program",
+      "value_pct": 0.4,
+      "level": "red",
+      "action": "stop scaling; wave 1 is the controlled read",
+      "owner": "Vic+Alex"
+    }
   ],
   "constraint": {
     "binding": "reply_rate",
-    "evidence": ["0.4% replies over 2,029 sends", "0 replies in last 249 sends", "earlier Apollo sequences at the same 0.4%"],
+    "evidence": [
+      "0.4% replies over 2,029 sends",
+      "0 replies in last 249 sends",
+      "earlier Apollo sequences at the same 0.4%"
+    ],
     "next_lever": "wave 1: 178 tier-1 contacts on vertical-pain copy",
     "would_show_it_worked": ">= 0.5% positive after ~150 sequence-complete",
     "hypothesis_next": "offer/CTA if wave 1 still reads under 0.5%"
