@@ -1,0 +1,61 @@
+<!--
+  Drop-in section for the weekly report, in the same voice as the rest of the page:
+  one h3 per idea, prose under it, and one small table where a table earns its place.
+  Fill from metrics.json; leave a row out rather than show a zero you don't trust.
+-->
+
+<h3>Where each list stands</h3>
+<p>One row per campaign and wave. Positive reply rate is positive replies over contacts who
+completed the sequence, so a list that has just started shows a dash, not a zero.</p>
+
+<table class="scoreboard">
+  <thead>
+    <tr>
+      <th>Campaign · wave</th>
+      <th>Imported</th>
+      <th>First touches</th>
+      <th>Seq. complete</th>
+      <th>Bounce</th>
+      <th>Positive</th>
+      <th>Neutral</th>
+      <th>Negative</th>
+      <th>Wrong person</th>
+      <th>Meetings</th>
+      <th>Positive rate</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>partnerships · wave 1</td>
+      <td>178</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+    </tr>
+    <tr>
+      <td>full lead base · tier 1–2</td>
+      <td>247</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+    </tr>
+    <tr>
+      <td>full lead base · tier 3–4</td>
+      <td>1,153</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td><td>—</td>
+    </tr>
+  </tbody>
+</table>
+
+<h3>Signals this week</h3>
+<p>A signal names an action and an owner; green ones are not listed.</p>
+<ul>
+  <li><strong>Positive reply rate — red.</strong> 0.4% over 2,029 sends all time, 0 in the last 249. Action: no scaling of the full base until wave 1 reads; owner Vic + Alex.</li>
+</ul>
+
+<h3>The constraint this week</h3>
+<p><strong>Binding constraint:</strong> reply rate, not supply.<br>
+<strong>Evidence:</strong> 0.4% all time; 0 of the last 249; the older Apollo sequences ran at the same rate.<br>
+<strong>Next lever:</strong> wave 1 — 178 hand-checked tier-1 contacts on the vertical-pain copy.<br>
+<strong>Would show it worked:</strong> at least 0.5% positive after roughly 150 contacts complete the sequence.<br>
+<strong>If it doesn't:</strong> the constraint is the offer and the CTA, not the list or the copy.</p>
+
+<style>
+  table.scoreboard { border-collapse: collapse; width: 100%; font-size: 0.92em; margin: 0.5em 0 1.5em; }
+  table.scoreboard th, table.scoreboard td { text-align: right; padding: 0.35em 0.6em; border-bottom: 1px solid rgba(127,127,127,0.25); }
+  table.scoreboard th:first-child, table.scoreboard td:first-child { text-align: left; }
+  table.scoreboard thead th { font-weight: 600; }
+</style>
